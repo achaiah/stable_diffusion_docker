@@ -9,4 +9,4 @@ if [[ -n "${LT}" ]]; then
 fi
 # available params found here: https://github.com/sd-webui/stable-diffusion-webui/wiki/Command-line-options#list-of-command-line-options
 # enable huge image generation
-python3 webui.py --opt-split-attention
+python3 webui.py --opt-split-attention --listen

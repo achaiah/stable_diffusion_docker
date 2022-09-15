@@ -34,6 +34,8 @@ achaiah.local/ai.inference.stable_diffusion_webui:latest
 
 Note the `-v` argument. If you want your images to be preserved after docker shuts down you will want to map a local path to the output produced by `webui`.
 
+For devs: there are many other flags available that you can add to `runme.sh`. For a full list see [this file](https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/modules/shared.py#L16).
+
 ### Sharing
 
 Localtunnel is installed to provide public access to anyone you'd like. To enable it, start docker with `-e LT=Y` 
