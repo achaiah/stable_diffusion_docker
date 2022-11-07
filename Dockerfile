@@ -21,6 +21,7 @@ RUN apt-get update && \
     libgl1-mesa-dev \
     libjpeg-dev \
     libssl-dev \
+    links2 \
     lsof \
     nano \
     net-tools \
@@ -28,7 +29,9 @@ RUN apt-get update && \
     sed \
     software-properties-common \
     unzip \
-    wget && \
+    w3m \
+    wget \
+    xdg-utils && \
   apt-get clean all
 
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh && chmod 777 Miniconda3-py39_4.12.0-Linux-x86_64.sh
@@ -48,12 +51,12 @@ RUN cd /content/stable-diffusion-webui/models/ && \
   wget https://huggingface.co/Daswer123/gfdsa/resolve/main/hypernetworks.zip -O /content/stable-diffusion-webui/models/hypernetworks.zip && \
   cd /content/stable-diffusion-webui/models && unzip hypernetworks.zip 
 
-# ENV user_header = "<HF Token Here>"
-RUN wget --header="<HF Token Here>" https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5.ckpt
-RUN wget --header="<HF Token Here>" https://huggingface.co/runwayml/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5-inpainting.ckpt
+# ENV user_header = "Authorization: Bearer <HF Token Here>"
+RUN wget --header="Authorization: Bearer <HF Token Here>" https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5.ckpt
+RUN wget --header="Authorization: Bearer <HF Token Here>" https://huggingface.co/runwayml/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5-inpainting.ckpt
 #VAE
-RUN wget --header="<HF Token Here>" https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5.vae.pt
-RUN wget --header="<HF Token Here>" https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5-inpainting.vae.pt
+RUN wget --header="Authorization: Bearer <HF Token Here>" https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5.vae.pt
+RUN wget --header="Authorization: Bearer <HF Token Here>" https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5-inpainting.vae.pt
     
 # Get GFPGAN
 RUN cd /content/stable-diffusion-webui/ && \
