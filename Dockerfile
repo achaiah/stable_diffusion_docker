@@ -39,26 +39,25 @@ RUN conda install -c anaconda pip
 # where to clone code and output results (will be mapped to a volume/folder of underlying OS)
 RUN mkdir /content && mkdir /outputs
 WORKDIR /content
+
 RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui && cd stable-diffusion-webui && \
-  pip install -r requirements.txt && \
-  mkdir repositories && \
-  git clone https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion && \
-  git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers && \
-  git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer && \
-  git clone https://github.com/salesforce/BLIP.git repositories/BLIP && \
-  pip install -r repositories/CodeFormer/requirements.txt
+  pip install -r requirements.txt
 
+# Download hypernetworks
+RUN cd /content/stable-diffusion-webui/models/ && \
+  wget https://huggingface.co/Daswer123/gfdsa/resolve/main/hypernetworks.zip -O /content/stable-diffusion-webui/models/hypernetworks.zip && \
+  cd /content/stable-diffusion-webui/models && unzip hypernetworks.zip 
+
+# ENV user_header = "<HF Token Here>"
+RUN wget --header="<HF Token Here>" https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5.ckpt
+RUN wget --header="<HF Token Here>" https://huggingface.co/runwayml/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5-inpainting.ckpt
+#VAE
+RUN wget --header="<HF Token Here>" https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5.vae.pt
+RUN wget --header="<HF Token Here>" https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.ckpt -O /content/stable-diffusion-webui/models/Stable-diffusion/sd-v1-5-inpainting.vae.pt
+    
+# Get GFPGAN
 RUN cd /content/stable-diffusion-webui/ && \
-  wget "https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl&mode=grid&download=1" -O /content/stable-diffusion-webui/model.ckpt && \
-  wget https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
-
-RUN cd /content/stable-diffusion-webui && git pull
-
-# Change maximum steps to 500
-RUN wget https://pastebin.com/raw/JUQ0Heq6 -O /content/stable-diffusion-webui/ui-config.json
-
-COPY fix_line.py /content
-RUN python /content/fix_line.py
+wget https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.4.pth
 
 RUN pip uninstall -y pillow pillow-simd && CC="cc -mavx2" pip install -U --force-reinstall pillow-simd
 

@@ -8,7 +8,7 @@ This should go without saying but you need an NVIDIA graphics card with at least
 
 ## Build
 
-Build as you would any normal docker image. Image name can be whatever you want it to be (I called it `achaiah.local` in this case) E.g.:
+Edit the `Dockerfile` and replace the `<HF Token Here>` with your HuggingFace token to access the stable-diffusion v1.5 models. Then build as you would any normal docker image. Image name can be whatever you want it to be (I called it `achaiah.local` in this case) E.g.:
 
 ```bash
 DOCKER_BUILDKIT=0 docker build -t achaiah.local/ai.inference.stable_diffusion_webui:latest -f Dockerfile .
@@ -33,6 +33,8 @@ achaiah.local/ai.inference.stable_diffusion_webui:latest
 ```
 
 Note the `-v` argument. If you want your images to be preserved after docker shuts down you will want to map a local path to the output produced by `webui`.
+
+The first run of this container will take a while because it will install additional libraries. Afterwards, if you simply restart the container, the changes will be preserved. Alternatively remove the `--rm` flag to avoid deleting the container on shutdown.
 
 For devs: there are many other flags available that you can add to `runme.sh`. For a full list see [this file](https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/modules/shared.py#L16).
 
