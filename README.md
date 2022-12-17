@@ -15,7 +15,16 @@ DOCKER_BUILDKIT=0 docker build -t achaiah.local/ai.inference.stable_diffusion_we
 ```
 
 ## Run
-With docker running, execute:
+1. Create local directories for image output `log` and `models/Stable-diffusion`:
+
+```bash
+    mkdir -p /your/local/output/path/log
+    mkdir -p /your/local/output/path/models/Stable-diffusion
+```
+
+2. Get your HuggingFace developer token from HF's website and pass it as an env. variable into the container (see below)
+
+3. With docker running, execute:
 
 ```bash
 docker run \
@@ -28,13 +37,15 @@ docker run \
 --ipc=host \
 --ulimit memlock=-1 \
 --ulimit stack=67108864 \
--v </your/local/output/path>:/content/stable-diffusion-webui/log \
+-e WGET_USER_HEADER="Authorization: Bearer <Your Huggingface Token Here>" \
+-v </your/local/output/path/log>:/content/stable-diffusion-webui/log \
+-v </your/local/output/path/models>:/content/stable-diffusion-webui/models \
 achaiah.local/ai.inference.stable_diffusion_webui:latest
 ```
 
-Note the `-v` argument. If you want your images to be preserved after docker shuts down you will want to map a local path to the output produced by `webui`.
+Note the `-v` arguments. If you want your images to be preserved after docker shuts down you will want to map a local path to the output produced by `webui` and to the models that it downloads.
 
-The first run of this container will take a while because it will install additional libraries. Afterwards, if you simply restart the container, the changes will be preserved. Alternatively remove the `--rm` flag to avoid deleting the container on shutdown.
+The first run of this container will take a while because it will download all models (~15 GB) and install additional libraries. Afterwards, if you simply restart the container, the changes will be preserved. Alternatively remove the `--rm` flag to avoid deleting the container on shutdown.
 
 For devs: there are many other flags available that you can add to `runme.sh`. For a full list see [this file](https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/modules/shared.py#L16).
 
