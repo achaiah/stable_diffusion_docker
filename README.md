@@ -1,14 +1,12 @@
 # Stable Diffusion docker file
 
-This is a dockerized version of the project by [daswer123](https://github.com/daswer123/stable-diffusion-colab).
+This is a dockerized version of the project by [AUTOMATIC1111](https://github.com/AUTOMATIC1111/stable-diffusion-webui). The features of the UI are described [here](https://github.com/AUTOMATIC1111/stable-diffusion-webui-feature-showcase).
 
-The project now relies on [AUTOMATIC1111's](https://github.com/AUTOMATIC1111/stable-diffusion-webui) repo. The features of the UI are described [here](https://github.com/AUTOMATIC1111/stable-diffusion-webui-feature-showcase).
-
-This should go without saying but you need an NVIDIA graphics card with at least 8GB RAM. Rumor has it that you can run it even on 4GB but you will be very limited in your results.
+This should go without saying but you need an NVIDIA graphics card with at least 8GB RAM. Rumor has it that you can run it even on 4GB but you will be limited in your results.
 
 ## Build
 
-Edit the `Dockerfile` and replace the `<HF Token Here>` with your HuggingFace token to access the stable-diffusion v1.5 models. Then build as you would any normal docker image. Image name can be whatever you want it to be (I called it `achaiah.local` in this case) E.g.:
+Build as you would any normal docker image. Image name can be whatever you want it to be (I called it `achaiah.local` in this case) E.g.:
 
 ```bash
 DOCKER_BUILDKIT=0 docker build -t achaiah.local/ai.inference.stable_diffusion_webui:latest -f Dockerfile .
